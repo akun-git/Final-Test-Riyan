@@ -9,21 +9,24 @@ public class BaseTest {
 
     protected static WebDriver driver;
 
-    public WebDriver getDriver() {
-        if (driver == null) {
-            ChromeOptions option = new ChromeOptions();
-            option.addArguments("--remote-allow-origins=*", "--headless");
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver(option);
+    protected WebDriver getDriver() {
+        if (driver == null) { // Ensure driver is initialized only once
+            System.setProperty("webdriver.chrome.driver", "./src/test/resources/chromedriver/chromedriver.exe");
+            ChromeOptions options = new ChromeOptions();
+//            options.addArguments("--headless");
+            options.addArguments("--remote-allow-origins=*");
+            driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
         }
         return driver;
     }
 
-    public void closeDriver() {
+    protected void closeDriver() {
         if (driver != null) {
             driver.quit();
-            driver = null;
+            driver = null; // Reset the driver to prevent reuse
         }
     }
+
 
 }
