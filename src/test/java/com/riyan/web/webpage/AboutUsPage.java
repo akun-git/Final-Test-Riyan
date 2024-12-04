@@ -3,6 +3,7 @@ package com.riyan.web.webpage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,14 +29,12 @@ public class AboutUsPage {
 
     public void clickLinkAboutUs() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.elementToBeClickable(linkAboutUs));
+        wait.until(ExpectedConditions.presenceOfElementLocated(linkAboutUs));
 
-        // Scroll to the element
+        // Click using JavaScript
+        WebElement aboutUsLink = driver.findElement(linkAboutUs);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(linkAboutUs));
-
-        // Click the element
-        driver.findElement(linkAboutUs).click();
+        js.executeScript("arguments[0].click();", aboutUsLink);
     }
 
     public void clickPlayButton() {
