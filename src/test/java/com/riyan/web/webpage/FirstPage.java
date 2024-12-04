@@ -25,7 +25,7 @@ public class FirstPage {
     public void openWeb() {
         driver.get("https://www.demoblaze.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("nava")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("navbarExample")));
     }
 
     public void clickSignin() {
