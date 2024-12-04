@@ -37,8 +37,24 @@ public class AboutUsPage {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView(true);", aboutUsLink);
 
+        // Add a short delay to ensure the page settles after scrolling
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread was interrupted", e);
+        }
+
         // Wait for the element to be clickable
         wait.until(ExpectedConditions.elementToBeClickable(aboutUsLink));
+
+        // Add another short delay before clicking
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread was interrupted", e);
+        }
 
         // Click the element
         aboutUsLink.click();
