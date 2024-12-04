@@ -22,6 +22,8 @@ public class LoginPage {
     By login_btn = By.xpath("//*[@id=\"logInModal\"]/div/div/div[3]/button[2]");
     By close_btn = By.xpath("//*[@id=\"logInModal\"]/div/div/div[3]/button[1]");
     By logout_btn = By.id("logout2");
+    By linkAboutUs = By.xpath("//*[@id=\"navbarExample\"]/ul/li[3]/a");
+
 
 
     public LoginPage(WebDriver driver) {
@@ -50,6 +52,7 @@ public class LoginPage {
     public void validateOnHomePage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.elementToBeClickable(logout_btn));
+        wait.until(ExpectedConditions.elementToBeClickable(linkAboutUs));
 
         // Extract and trim text
         String welcomeUser = driver.findElement(By.id("nameofuser")).getText().trim();
