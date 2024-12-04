@@ -1,0 +1,92 @@
+plugins {
+    id 'java'
+}
+
+group = 'riyan.com'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JUnit dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
+
+    // WebDriverManager for browser driver management
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+    // Selenium for Web UI tests
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.12.1'
+
+    // Cucumber for BDD tests
+    testImplementation 'io.cucumber:cucumber-java:7.20.1'
+    testImplementation 'io.cucumber:cucumber-junit:7.20.1'
+
+    // Rest-Assured for API testing
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+    testImplementation 'io.rest-assured:json-path:5.3.0'
+    testImplementation 'io.rest-assured:json-schema-validator:5.3.0'
+
+    // JSON library for parsing
+    testImplementation 'org.json:json:20230227'
+
+    // AssertJ for assertions
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+
+def tags = (findProperty('tags') == null) ? 'not @exclude' : findProperty('tags') + ' and not @exclude'
+
+tasks.register('apirun') {
+    description("Running Test api")
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'html:reports/web/index.html',
+                    '--plugin', 'json:reports/web/index.json',
+                    '--plugin', 'pretty',
+                    '--glue', 'com.riyan.api',
+                    '--tags', "${tags}",
+                    'src/test/resources/apifeature'
+            ]
+        }
+    }
+
+}
+
+tasks.register('webrun') {
+    description("Running Test Web")
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'html:reports/web/index.html',
+                    '--plugin', 'json:reports/web/index.json',
+                    '--plugin', 'pretty',
+                    '--glue', 'com.riyan.web',
+                    '--tags', "${tags}",
+                    'src/test/resources/webfeature'
+            ]
+        }
+    }
+
+}
