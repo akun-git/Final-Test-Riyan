@@ -30,14 +30,18 @@ public class AboutUsPage {
     public void clickLinkAboutUs() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // Wait for the obstructing element to disappear
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("img[src='Samsung1.jpg']")));
+        // Wait for the element to be present
+        WebElement aboutUsLink = wait.until(ExpectedConditions.presenceOfElementLocated(linkAboutUs));
 
-        // Wait for the link to become clickable
-        wait.until(ExpectedConditions.elementToBeClickable(linkAboutUs));
+        // Scroll to the element
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", aboutUsLink);
+
+        // Wait for the element to be clickable
+        wait.until(ExpectedConditions.elementToBeClickable(aboutUsLink));
 
         // Click the element
-        driver.findElement(linkAboutUs).click();
+        aboutUsLink.click();
     }
 
     public void clickPlayButton() {
