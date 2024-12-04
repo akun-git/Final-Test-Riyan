@@ -59,8 +59,8 @@ tasks.register('apirun') {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
-                    '--plugin', 'html:reports/web/index.html',
-                    '--plugin', 'json:reports/web/index.json',
+                    '--plugin', 'html:reports/api/index.html',
+                    '--plugin', 'json:reports/api/index.json',
                     '--plugin', 'pretty',
                     '--glue', 'com.riyan.api',
                     '--tags', "${tags}",
