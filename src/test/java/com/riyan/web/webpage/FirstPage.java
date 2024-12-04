@@ -32,11 +32,22 @@ public class FirstPage {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
-        // Wait for visibility
-        WebElement signinButton = wait.until(ExpectedConditions.visibilityOfElementLocated(signin));
+        // Wait for the element to be present in the DOM
+        WebElement signinButton = wait.until(ExpectedConditions.presenceOfElementLocated(signin));
 
-        // Click using JavaScript
+        // Scroll into view if necessary
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", signinButton);
+
+        // Add a short delay for stability
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread interrupted", e);
+        }
+
+        // Click using JavaScript to bypass visibility issues
         js.executeScript("arguments[0].click();", signinButton);
 
         // Wait for the modal to appear
